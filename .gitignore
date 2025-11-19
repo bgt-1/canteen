@@ -1,0 +1,21 @@
+# Node modules everywhere
+backend/node_modules/
+student-app/node_modules/
+admin-app/node_modules/
+
+# ENV files
+backend/.env
+student-app/.env
+admin-app/.env
+
+# Build folders
+backend/dist/
+student-app/dist/
+admin-app/dist/
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
