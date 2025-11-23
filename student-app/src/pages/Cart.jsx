@@ -9,6 +9,8 @@ export default function Cart() {
     alert("Order placed successfully!");
     clearCart();
   };
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
 
   return (
     <div className="p-6">
@@ -37,6 +39,10 @@ export default function Cart() {
           >
             Place Order
           </button>
+          <p className="text-xl font-semibold mt-4">
+  Total: ₹{total}
+</p>
+
         </>
       )}
     </div>

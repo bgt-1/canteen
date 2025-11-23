@@ -34,14 +34,33 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await db.query(
-      "SELECT id, total, status, created_at FROM orders ORDER BY created_at DESC"
+    const [orders] = await db.query(
+      "SELECT * FROM orders ORDER BY created_at DESC"
     );
 
-    res.json(rows);
+    for (let order of orders) {
+      const [items] = await db.query(
+        `SELECT 
+            oi.qty, 
+            oi.price, 
+            m.name 
+         FROM order_items oi
+         JOIN menu_items m ON oi.item_id = m.id
+         WHERE oi.order_id = ?`,
+        [order.id]
+      );
+
+      order.items = items;
+    }
+
+    res.json(orders);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching orders" });
+    console.log("ORDER FETCH ERROR:", err);
+    res.status(500).json({ message: "Orders fetch failed" });
   }
 });
+
+
+
 
 export default router;
