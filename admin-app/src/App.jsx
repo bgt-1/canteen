@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import MenuManage from "./pages/MenuManage";
 import OrdersManage from "./pages/OrdersManage";
 import InventoryManage from "./pages/InventoryManage";
+import "./index.css";
 
 export default function App() {
   return (
