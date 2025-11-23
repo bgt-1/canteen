@@ -6,29 +6,31 @@ const router = express.Router();
 // GET inventory
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await db.promise().query("SELECT * FROM inventory");
+    const [rows] = await db.query("SELECT * FROM inventory");
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ message: "Inventory error" });
+    console.log("🔥 REAL MYSQL ERROR --->", err);
+    res.status(500).json(err);
   }
 });
 
-// UPDATE item quantity
-router.put("/", async (req, res) => {
-  const { item_name, qty } = req.body;
+
+router.put("/:id", async (req, res) => {
+  const { qty } = req.body;
+  const { id } = req.params;
 
   try {
-    await db
-      .promise()
-      .query("UPDATE inventory SET qty = ? WHERE item_name = ?", [
-        qty,
-        item_name,
-      ]);
+    await db.query(
+      "UPDATE inventory SET qty = ? WHERE id = ?",
+      [qty, id]
+    );
 
-    res.json({ message: "Inventory updated" });
+    res.json({ message: "Inventory updated ✅" });
   } catch (err) {
+    console.log("UPDATE ERROR:", err);
     res.status(500).json({ message: "Update failed" });
   }
 });
+
 
 export default router;

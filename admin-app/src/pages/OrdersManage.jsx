@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API from "../api/api";
+import API from "../api/adminApi";
 
 export default function OrdersManage() {
   const [orders, setOrders] = useState([]);
@@ -9,9 +9,9 @@ export default function OrdersManage() {
   };
 
   const updateStatus = (id, status) => {
-    API.updateOrder(id, status).then(() => {
+    API.updateOrderStatus(id, status).then(() => {
       fetchOrders();
-      alert("Status Updated");
+      alert("Status Updated ✅");
     });
   };
 
@@ -27,11 +27,11 @@ export default function OrdersManage() {
         <div key={o.id} className="p-4 border mb-3">
           <h2 className="font-bold">Order #{o.id}</h2>
           <p>Total: ₹{o.total}</p>
-          <p>Status: {o.status}</p>
 
-          <select className="border p-2"
-            onChange={(e) => updateStatus(o.id, e.target.value)}
+          <select
+            className="border p-2"
             defaultValue={o.status}
+            onChange={(e) => updateStatus(o.id, e.target.value)}
           >
             <option value="pending">Pending</option>
             <option value="accepted">Accepted</option>

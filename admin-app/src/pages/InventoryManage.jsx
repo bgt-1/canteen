@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
-import API from "../api/api";
+import {
+  getInventory,
+  updateInventory
+} from "../api/adminApi";
 
 export default function InventoryManage() {
   const [items, setItems] = useState([]);
+  const [qtyInputs, setQtyInputs] = useState({});
 
   const fetchInventory = () => {
-    API.getInventory().then((res) => setItems(res.data));
+    getInventory().then((res) => setItems(res.data));
   };
 
-  const updateQty = (id, qty) => {
-    API.updateInventory(id, qty).then(() => {
+  const handleChange = (id, value) => {
+    setQtyInputs({
+      ...qtyInputs,
+      [id]: value,
+    });
+  };
+
+  const handleUpdate = (id) => {
+    const qty = qtyInputs[id];
+
+    if (!qty || qty < 0) {
+      alert("Enter a valid quantity");
+      return;
+    }
+
+    updateInventory(id, qty).then(() => {
       fetchInventory();
-      alert("Updated!");
+      alert("Quantity updated ✅");
     });
   };
 
@@ -23,18 +41,37 @@ export default function InventoryManage() {
     <div className="p-6">
       <h1 className="text-xl font-bold mb-4">Inventory</h1>
 
-      {items.map((i) => (
-        <div key={i.id} className="border p-4 mb-2 flex justify-between">
-          <span>{i.item_name} — {i.qty}</span>
+      {items.length === 0 ? (
+        <p>No items found</p>
+      ) : (
+        items.map((i) => (
+          <div
+            key={i.id}
+            className="border p-4 mb-2 flex justify-between items-center"
+          >
+            <span>
+              {i.item_name} — {i.qty}
+            </span>
 
-          <input
-            type="number"
-            className="border p-1 w-20"
-            onChange={(e) => updateQty(i.id, e.target.value)}
-            placeholder="Update qty"
-          />
-        </div>
-      ))}
+            <div className="flex gap-2">
+              <input
+                type="number"
+                className="border p-1 w-24"
+                value={qtyInputs[i.id] || ""}
+                onChange={(e) => handleChange(i.id, e.target.value)}
+                placeholder="New qty"
+              />
+
+              <button
+                className="bg-blue-500 text-white px-3 py-1 rounded"
+                onClick={() => handleUpdate(i.id)}
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 }
