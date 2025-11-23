@@ -20,6 +20,8 @@ export const updateOrderStatus = (id, status) =>
 export const getInventory = () => API.get("/inventory");
 export const updateInventory = (id, qty) =>
   API.put(`/inventory/${id}`, { qty });
+export const getDashboardStats = () => API.get("/dashboard");
+
 
 export default {
   getMenu,
@@ -29,4 +31,6 @@ export default {
   updateOrderStatus,
   getInventory,
   updateInventory,
+  getDashboardStats,
+
 };
