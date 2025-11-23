@@ -6,6 +6,9 @@ dotenv.config();
 import menuRoutes from "./routes/menuRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import recommendRoutes from "./routes/recommendRoutes.js";
+
+
 
 
 
@@ -23,6 +26,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 // for User
+app.use("/api/recommend", recommendRoutes);
 app.use("/api/menu", menuRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/cart", cartRoutes);
