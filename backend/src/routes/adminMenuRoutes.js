@@ -31,16 +31,19 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ✅ DELETE menu item
 router.delete("/:id", async (req, res) => {
   try {
-    await db.query("DELETE FROM menu_items WHERE id = ?", [
-      req.params.id,
-    ]);
+    const id = req.params.id;
 
-    res.json({ message: "Item deleted ✅" });
+    // delete order items first
+    await db.query("DELETE FROM order_items WHERE item_id = ?", [id]);
+
+    // then delete menu item
+    await db.query("DELETE FROM menu_items WHERE id = ?", [id]);
+
+    res.json({ message: "Item deleted" });
   } catch (err) {
-    console.log("MENU DELETE ERROR:", err);
+    console.log("DELETE ERROR:", err);
     res.status(500).json({ message: "Delete failed" });
   }
 });

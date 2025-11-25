@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div className="p-6 text-center">
       <h1 className="text-3xl font-bold text-blue-600 mb-2">
-        Welcome to the Canteen!
+        Welcome to the  JIIT Canteen!
       </h1>
       <p className="text-gray-600 mb-8">
         Order your favourite snacks and meals instantly.
